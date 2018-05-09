@@ -13,7 +13,7 @@
 
 ## 支持的系统
 
-- ubuntu 16.04.4    [（16.04.2 16.04.3 点击此处下载）](https://github.com/xiangxiaoc/shell/tree/master/nvidia-docker_2.0.2%2Bdocker-ce_17.12.0%2Bdocker-compose_1.19.0)
+- ubuntu 16.04.4    [（16.04.2 16.04.3 点击此处下载）](https://raw.githubusercontent.com/xiangxiaoc/docker-ce_docker-compose_nvidia-docker2/master/nvidia-docker_2.0.2%2Bdocker-ce_17.12.0%2Bdocker-compose_1.19.0.tar.gz)
 - centos 7.4.1708
 
 &emsp;&emsp;在概述里也提到过，docker-compose 1.19.0 是支持 docker-compose 配置文件 version 2.3 的最低版本，发布docker-compose 1.19.0 时，当时最新的 Ubuntu 为 16.04.2，所以也不再做此前版本的套装整理了
