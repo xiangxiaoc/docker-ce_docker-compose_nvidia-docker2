@@ -33,7 +33,6 @@ function install() {
         *)   
         until  
         echo
-        echo "0. 全部安装"
         echo "1. 安装docker-ce"  
         echo "2. 安装nvidia-docker2"  
         echo "3. 安装docker-compose"
@@ -43,7 +42,7 @@ function install() {
         test $install_input == 4  
         do  
             case $install_input in  
-                0)  install_docker-ce;install_nvidia-docker2;install_docker-compose     ;;
+                # 0)  install_docker-ce;install_nvidia-docker2;install_docker-compose     ;;
                 1)  install_docker-ce   ;;  
                 2)  install_nvidia-docker2  ;;   
                 3)  install_docker-compose  ;;
@@ -156,17 +155,16 @@ function remove() {
         *)
         until  
         echo
-        echo "0. 全部卸载"
         echo "1. 卸载nvidia-docker2(优先)"
         echo "2. 卸载docker-ce"  
         echo "3. 卸载docker-compose"
         echo "4. 退出"
         echo
-        read -p "请输入[0-4]：" remove_input  
+        read -p "请输入[1-4]：" remove_input  
         test $remove_input == 4  
             do  
                 case $remove_input in  
-                    0)  remove_nvidia-docker2;remove_docker-ce;remove_docker-compose    ;;
+                    # 0)  remove_nvidia-docker2;remove_docker-ce;remove_docker-compose    ;;
                     1)  remove_nvidia-docker2   ;;
                     2)  remove_docker-ce  ;;   
                     3)  remove_docker-compose  ;;
