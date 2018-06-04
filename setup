@@ -95,6 +95,7 @@ function config() {
         read -p "请输入[0-5]：" config_input  
         test $config_input == 5
             do  
+                clear
                 case $config_input in  
                     0)  config_recover  ;;
                     1)  add_docker_user     ;;
