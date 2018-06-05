@@ -89,7 +89,7 @@ function config() {
         echo "1. 【推荐】 将你的用户添加进docker用户组"
         echo "2. 【推荐】 配置国内镜像仓库 (加快在国内拉取镜像的速度)"  
         echo "3. 【可选】 配置局域网私有仓库IP地址或域名地址（有需要还是联系本地私有仓库管理员）"  
-        echo "4. 【可选】 暴露2375端口到局域网
+        echo "4. 【可选】 暴露2375端口到局域网"
         echo "5. 退出并重载dockerd服务"
         echo
         read -p "请输入[0-5]：" config_input  
@@ -156,7 +156,7 @@ function remove() {
         *)
         until  
         echo
-        echo "1. 卸载nvidia-docker2(优先)"
+        echo "1. 卸载nvidia-docker2\(优先\)"
         echo "2. 卸载docker-ce"  
         echo "3. 卸载docker-compose"
         echo "4. 退出"
