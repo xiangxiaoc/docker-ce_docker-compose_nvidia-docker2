@@ -90,18 +90,20 @@ function config() {
         echo "2. 【推荐】 配置国内镜像仓库 (加快在国内拉取镜像的速度)"  
         echo "3. 【可选】 配置局域网私有仓库IP地址或域名地址（有需要还是联系本地私有仓库管理员）"  
         echo "4. 【可选】 暴露2375端口到局域网"
-        echo "5. 退出并重载dockerd服务"
+        echo "5. 【可选】 使dockerd默认使用nvidia运行时，并支持swarm调度"
+        echo "6. 退出并重载dockerd服务"
         echo
-        read -p "请输入[0-5]：" config_input  
+        read -p "请输入[0-6]：" config_input  
         test $config_input == 5
             do  
                 clear
                 case $config_input in  
-                    0)  config_recover  ;;
-                    1)  add_docker_user     ;;
-                    2)  config_registry-mirror  ;;  
-                    3)  config_registry-ip  ;;   
-                    4)  config_port  ;;
+                    "0")  config_recover  ;;
+                    "1")  add_docker_user     ;;
+                    "2")  config_registry-mirror  ;;  
+                    "3")  config_registry-ip  ;;   
+                    "4")  config_port  ;;
+                    "5")  config_runtime    ;;  
                 esac  
             done  
         systemctl daemon-reload
@@ -135,6 +137,12 @@ function config_port() {
     echo "已允许任意ip地址远程操作dockerd服务"
 }
 
+function config_runtime() {
+    export GPU_ID=`nvidia-smi -a | grep UUID | awk '{print substr($4,0,12)}'`
+    sed -i "${line_number}s/$/ --default-runtime=nvidia --node-generic-resource gpu=${GPU_ID}" /lib/systemd/system/docker.service
+    sed -i '1iswarm-resource = "DOCKER_RESOURCE_GPU"' /etc/nvidia-container-runtime/config.toml  
+}
+
 function config_recover() {
     read -p "确认要恢复所有配置吗？[y/n]：" recover_input
     if [ ${recover_input} == y ];then
@@ -156,7 +164,7 @@ function remove() {
         *)
         until  
         echo
-        echo "1. 卸载nvidia-docker2\(优先\)"
+        echo "1. 卸载nvidia-docker2(优先)"
         echo "2. 卸载docker-ce"  
         echo "3. 卸载docker-compose"
         echo "4. 退出"
