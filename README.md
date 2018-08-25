@@ -2,8 +2,8 @@
 
 1. docker 官方不支持加载 NVIDIA 显卡的 GPU 资源，为了让容器里也有 GPU，NVIDIA 厂商官方发布了 nvidia-docker，在生成容器时，使用 ```nvidia-docker create ...``` 或者 ```nvidia-docker run ...``` 生成容器，那么这个容器就可以加载到宿主机上的 GPU 了！（前提是你宿主机上必须安装有NVIDIA的显卡驱动）；
 2. 在 nvidia-docker 更新到 nvidia-docker2 后，支持 ```docker create --runtime=nvidia ...``` 或者 ```docker run --runtime=nvidia ...``` 同样来达到加载GPU的效果；
-3. 既然支持原生 docker 加 runtime 就可以加载 GPU，那么就可以使用 docker-compose 来编排启动，docker-compose.yml 里面相应参数为 ```runtime: nvidia``` ；
-4. 为了支持 runtime 参数，docker-compose.yml 的 version 必须为 2.3 及以上(version: '2.3')，对应地，为了能解析2.3版本及以上的yml，docker-compose的版本又必须是 1.19.0 及以上，要将 docker，nvidia-docker，docker-compose 组合起来使用，所以才进行了这次的整理
+3. 既然支持原生 docker 加 runtime 就可以加载 GPU，那么就可以使用 docker-compose 来编排启动，docker-compose.yml 里面相应的选项为 ```runtime: nvidia``` ；
+4. 为了支持 runtime 选项，docker-compose.yml 的 version 必须为 2.3 及以上(version: '2.3')，对应地，为了能解析2.3版本及2.4版本 yml 里面的 runtime 选项，docker-compose的版本又必须是 1.19.0 及以上，要将 docker，nvidia-docker，docker-compose 组合起来使用，所以才进行了这次的整理
 
 ## 当前版本
 
