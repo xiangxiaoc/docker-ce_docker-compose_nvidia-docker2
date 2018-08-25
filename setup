@@ -94,7 +94,7 @@ function config() {
         echo "6. 退出并重载dockerd服务"
         echo
         read -p "请输入[0-6]：" config_input  
-        test $config_input == 5
+        test $config_input == 6
             do  
                 clear
                 case $config_input in  
