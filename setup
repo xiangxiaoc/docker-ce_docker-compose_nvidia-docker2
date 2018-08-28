@@ -98,12 +98,12 @@ function config() {
             do  
                 clear
                 case $config_input in  
-                    "0")  config_recover  ;;
-                    "1")  add_docker_user     ;;
-                    "2")  config_registry-mirror  ;;  
-                    "3")  config_registry-ip  ;;   
-                    "4")  config_port  ;;
-                    "5")  config_runtime    ;;  
+                    "0")  config_recover            ;;
+                    "1")  add_docker_user           ;;
+                    "2")  config_registry-mirror    ;;  
+                    "3")  config_registry_url       ;;   
+                    "4")  config_port               ;;
+                    "5")  config_runtime            ;;  
                 esac  
             done  
         systemctl daemon-reload
@@ -125,10 +125,10 @@ function config_registry-mirror() {
     echo "已添加国内镜像仓库 https://registry.docker-cn.com"
 }
 
-function config_registry-ip() {
-    read -p "输入私有仓库的IP地址：" registry_ip
-    sed -i "${line_number}s/$/ --insecure-registry=${registry_ip}:5000/" /lib/systemd/system/docker.service
-    echo "已添加私有仓库地址：${registry_ip}"
+function config_registry_url() {
+    read -p "输入私有仓库的地址：" registry_url
+    sed -i "${line_number}s/$/ --insecure-registry=${registry_url}:5000/" /lib/systemd/system/docker.service
+    echo "已添加私有仓库地址：${registry_url}，如果添加的是域名，还需要配置 /etc/hosts，将域名解析成 IP 地址"
 }
 
 function config_port() {
