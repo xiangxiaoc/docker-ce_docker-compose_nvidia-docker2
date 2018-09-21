@@ -139,8 +139,9 @@ function config_port() {
 
 function config_runtime() {
     export GPU_ID=`nvidia-smi -a | grep UUID | awk '{print substr($4,0,12)}'`
-    sed -i "${line_number}s/$/ --default-runtime=nvidia --node-generic-resource gpu=${GPU_ID}" /lib/systemd/system/docker.service
-    sed -i '1iswarm-resource = "DOCKER_RESOURCE_GPU"' /etc/nvidia-container-runtime/config.toml  
+    sed -i "${line_number}s/$/ --default-runtime=nvidia/" /lib/systemd/system/docker.service
+    sed -i "${line_number}s/$/ --node-generic-resource=gpu=${GPU_ID}/" /lib/systemd/system/docker.service
+    sed -i '1iswarm-resource = "DOCKER_RESOURCE_GPU"' /etc/nvidia-container-runtime/config.toml
 }
 
 function config_recover() {
