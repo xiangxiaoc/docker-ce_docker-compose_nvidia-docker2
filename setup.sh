@@ -12,8 +12,8 @@ fi
 os_release_id=$ID$VERSION_ID
 case $os_release_id in 
     ubuntu16.04)
-    child_version=$(echo $VERSION | awk '{print $1}' | cut -d "." -f 3)
-    if [ $child_version -lt 4 ];then
+    child_version=$(echo "$VERSION" | awk '{print $1}' | cut -d "." -f 3)
+    if [[ $child_version -lt 4 ]];then
         echo "当前脚本支持16.04.4及以上，更新系统后重试"
         exit 0
     fi
@@ -38,8 +38,8 @@ function install() {
         echo "3. 安装docker-compose"
         echo "4. 退出"
         echo
-        read -p "请输入[1-4]：" install_input  
-        test $install_input == 4  
+        read -r -p "请输入[1-4]：" install_input
+        test "$install_input" == 4
         do  
             case $install_input in  
                 # 0)  install_docker-ce;install_nvidia-docker2;install_docker-compose     ;;
@@ -90,11 +90,11 @@ function config() {
         echo "2. 【推荐】 配置国内镜像仓库 (加快在国内拉取镜像的速度)"  
         echo "3. 【可选】 配置局域网私有仓库IP地址或域名地址（有需要还是联系本地私有仓库管理员）"  
         echo "4. 【可选】 暴露2375端口到局域网"
-        echo "5. 【可选】 使dockerd默认使用nvidia运行时，并支持swarm调度"
-        echo "6. 退出并重载dockerd服务"
+        echo "5. 【可选】 使 dockerd 默认使用nvidia运行时，并支持swarm调度"
+        echo "6. 退出并重载 dockerd 服务"
         echo
-        read -p "请输入[0-6]：" config_input  
-        test $config_input == 6
+        read -r -p "请输入[0-6]：" config_input
+        test "$config_input" == 6
             do  
                 clear
                 case $config_input in  
@@ -109,13 +109,13 @@ function config() {
         systemctl daemon-reload
         systemctl restart docker.service
         else
-            echo "未找到启动dockerd的配置文件！检查docker-ce是否已安装！"
+            echo "未找到启动 dockerd 的配置文件！检查docker-ce是否已安装！"
     fi
 }
 
 function add_docker_user() {
-    read -p "输入你的用户名：" user_name
-    usermod -aG docker ${user_name}
+    read -r -p "输入你的用户名：" user_name
+    usermod -aG docker "${user_name}"
     echo "已将${user_name}添加进docker用户组"
     echo -e "\e[1;31m提示：重新登录后生效\e[0m"
 }
@@ -126,7 +126,7 @@ function config_registry-mirror() {
 }
 
 function config_registry_url() {
-    read -p "输入私有仓库的地址：" registry_url
+    read -r -p "输入私有仓库的地址：" registry_url
     sed -i "${line_number}s/$/ --insecure-registry=${registry_url}:5000/" /lib/systemd/system/docker.service
     echo "已添加私有仓库地址：${registry_url}，如果添加的是域名，还需要配置 /etc/hosts，将域名解析成 IP 地址"
 }
@@ -134,25 +134,25 @@ function config_registry_url() {
 function config_port() {
     add_string=" -H tcp:\/\/0.0.0.0:2375"
     sed -i "${line_number}s/$/${add_string}/" /lib/systemd/system/docker.service
-    echo "已允许任意ip地址远程操作dockerd服务"
+    echo "已允许任意ip地址远程操作 dockerd 服务"
 }
 
 function config_runtime() {
-    export GPU_ID=`nvidia-smi -a | grep UUID | awk '{print substr($4,0,12)}'`
+    GPU_ID=$(nvidia-smi -a | grep UUID | awk '{print substr($4,0,12)}')
     sed -i "${line_number}s/$/ --default-runtime=nvidia/" /lib/systemd/system/docker.service
     sed -i "${line_number}s/$/ --node-generic-resource=gpu=${GPU_ID}/" /lib/systemd/system/docker.service
     sed -i '1iswarm-resource = "DOCKER_RESOURCE_GPU"' /etc/nvidia-container-runtime/config.toml
 }
 
 function config_recover() {
-    read -p "确认要恢复所有配置吗？[y/n]：" recover_input
-    if [ ${recover_input} == y ];then
+    read -r -p "确认要恢复所有配置吗？[y/n]：" recover_input
+    if [[ ${recover_input} == y ]];then
         case ${os_release_id} in
             ubuntu16.04)     sed -i "${line_number}c ExecStart=/usr/bin/dockerd -H fd://" /lib/systemd/system/docker.service ;;
             centos7)   sed -i "${line_number}c ExecStart=/usr/bin/dockerd" /lib/systemd/system/docker.service ;;
         esac
     fi
-    echo "已恢复为初始配置文件，重载dockerd服务后生效"
+    echo "已恢复为初始配置文件，重载 dockerd 服务后生效"
 }
 
 #####################
@@ -170,8 +170,8 @@ function remove() {
         echo "3. 卸载docker-compose"
         echo "4. 退出"
         echo
-        read -p "请输入[1-4]：" remove_input  
-        test $remove_input == 4  
+        read -r -p "请输入[1-4]：" remove_input
+        test "$remove_input" == 4
             do  
                 case $remove_input in  
                     # 0)  remove_nvidia-docker2;remove_docker-ce;remove_docker-compose    ;;
